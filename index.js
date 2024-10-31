@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import config from "./config.js";
+import config from "./utils/config.js";
 import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";
 import supportRouter from "./routers/supportRouter.js";
@@ -17,20 +17,18 @@ import borrowerRepaymentRouter from "./routers/borrowerLoanRouter.js";
 import borrowerNotificationRouter from "./routers/borrowerNotificationRouter.js";
 import borrowerLoanRouter from "./routers/borrowerLoanRouter.js";
 import paymentRoutes from "./routers/paymentRoutes.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
-const app = express();
 const PORT = config.port;
 const { sequelize } = config;
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors());
-
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
 
 // Routers
 app.use("/api/users", userRouter);
@@ -48,7 +46,9 @@ app.use("/api/borrower-repayment", borrowerRepaymentRouter);
 app.use("/api/borrower-notification", borrowerNotificationRouter);
 app.use("/api/borrower-loan", borrowerLoanRouter);
 app.use("/api", paymentRoutes);
-
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 // Sync database and start the server
 sequelize
   .sync()

@@ -1,6 +1,6 @@
 // models/LoanReport.js
 import { DataTypes } from 'sequelize';
-import config from '../config.js'; 
+import config from '../utils/config.js'; 
 
 const { sequelize } = config; 
 
