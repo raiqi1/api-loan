@@ -1,7 +1,7 @@
 //for admin and lender loan
 
 import { DataTypes } from 'sequelize';
-import config from '../utils/config.js'; 
+import config from '../config.js'; 
 
 const { sequelize } = config; 
 

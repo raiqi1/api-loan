@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import config from "./utils/config.js";
+import config from "./config.js";
 import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";
 import supportRouter from "./routers/supportRouter.js";
@@ -50,16 +50,20 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 // Sync database and start the server
-sequelize
-  .sync()
-  .then(() => {
+
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server is running on http://localhost:${PORT}`);
     });
-  })
-  .catch((error) => {
-    console.error("Unable to connect to the database:", error.message);
-  });
+  } catch (error) {
+    console.error("Error connecting to the database: ", error.message);
+  }
+};
+
+startServer();
 
 // Error handling middleware
 app.use((err, req, res, next) => {
