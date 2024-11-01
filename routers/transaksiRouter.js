@@ -12,9 +12,9 @@ import {
 import authMiddleware from "../middleware/authMiddleware.js";
 import {
   createProduct,
-  getAllProduct,
   getAllProducts,
 } from "../controllers/productController.js";
+import { createTransaction, getAllTransactions } from "../controllers/transaksiController.js";
 
 const router = Router();
 
@@ -22,9 +22,9 @@ router.put("/:id/role", authMiddleware, updateUserRole); // Update user role
 router.put("/:id/activation", authMiddleware, toggleUserActivation);
 router.delete("/:id", authMiddleware, deleteUser);
 
-router.post("/create-products", authMiddleware, createProduct);
+router.post("/create-transaksi", authMiddleware, createTransaction);
+router.get("/all-transaksi", authMiddleware, getAllTransactions);
 router.get("/all-products", authMiddleware, getAllProducts);
-router.get("/all-product", getAllProduct);
 
 // Register new user
 router.post("/register", registerUser);

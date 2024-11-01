@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import config from "./config.js";
 import userRouter from "./routers/userRouter.js";
 import productRouter from "./routers/productRouter.js";
+import transaksiRouter from "./routers/transaksiRouter.js";
 import supportRouter from "./routers/supportRouter.js";
 import settingsRouter from "./routers/settingsRouter.js";
 import reviewloansRouter from "./routers/reviewloansRouter.js";
@@ -28,11 +29,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(
+  {
+    origin: "http://localhost:5173",
+    credentials: true,
+  }
+));
 
 // Routers
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/transaksi", transaksiRouter);
 app.use("/api/support", supportRouter);
 app.use("/api/settings", settingsRouter);
 app.use("/api/review-loan", reviewloansRouter);

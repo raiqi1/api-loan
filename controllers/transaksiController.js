@@ -2,16 +2,47 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Product from "../models/productModel.js";
+import Transaksi from "../models/transaksiModel.js";
 
-// Create Product tampilkan id yang membuatnya
-export const createProduct = async (req, res) => {
-  const { name } = req.body;
+// Membuat transaksi baru ada id yang membuat transaksi nya
+// src/controllers/transactionController.js
+
+export const createTransaction = async (req, res) => {
+  const { customer, product } = req.body;
 
   try {
-    const product = await Product.create({ name, userId: req.user.id });
+    // Membuat nomor invoice unik dengan timestamp dan angka acak
+    const invoiceNo = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+    const transaction = await Transaksi.create({
+      invoiceNo,
+      customer,
+      product,
+      userId: req.user.id,
+    });
+
     res.status(201).json({
-      data: product,
-      message: "Product created successfully",
+      data: transaction,
+      message: "Transaction created successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error creating transaction:", error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+
+
+// get all transactions by user login
+export const getAllTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaksi.findAll({
+      where: { userId: req.user.id },
+    });
+    res.json({
+      data: transactions,
+      message: "All transactions",
       success: true,
     });
   } catch (error) {
@@ -24,31 +55,6 @@ export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.findAll({ where: { userId: req.user.id } });
     res.json({ data: products, message: "All products", success: true });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// get all products
-export const getAllProduct = async (req, res) => {
-  try {
-    const products = await Product.findAll();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// delete product
-export const deleteProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const product = await Product.findByPk(id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
-
-    await product.destroy();
-    res.json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
