@@ -12,6 +12,7 @@ import {
 import authMiddleware from "../middleware/authMiddleware.js";
 import {
   createProduct,
+  deleteProduct,
   getAllProduct,
   getAllProducts,
 } from "../controllers/productController.js";
@@ -20,7 +21,7 @@ const router = Router();
 
 router.put("/:id/role", authMiddleware, updateUserRole); // Update user role
 router.put("/:id/activation", authMiddleware, toggleUserActivation);
-router.delete("/:id", authMiddleware, deleteUser);
+router.delete("/:id", authMiddleware, deleteProduct);
 
 router.post("/create-products", authMiddleware, createProduct);
 router.get("/all-products", authMiddleware, getAllProducts);

@@ -14,13 +14,13 @@ import {
   createProduct,
   getAllProducts,
 } from "../controllers/productController.js";
-import { createTransaction, getAllTransactions } from "../controllers/transaksiController.js";
+import { createTransaction, deleteTransaction, getAllTransactions } from "../controllers/transaksiController.js";
 
 const router = Router();
 
 router.put("/:id/role", authMiddleware, updateUserRole); // Update user role
 router.put("/:id/activation", authMiddleware, toggleUserActivation);
-router.delete("/:id", authMiddleware, deleteUser);
+router.delete("/:id", authMiddleware, deleteTransaction);
 
 router.post("/create-transaksi", authMiddleware, createTransaction);
 router.get("/all-transaksi", authMiddleware, getAllTransactions);

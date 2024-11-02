@@ -32,8 +32,6 @@ export const createTransaction = async (req, res) => {
   }
 };
 
-
-
 // get all transactions by user login
 export const getAllTransactions = async (req, res) => {
   try {
@@ -45,6 +43,22 @@ export const getAllTransactions = async (req, res) => {
       message: "All transactions",
       success: true,
     });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// delete transaction
+export const deleteTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const transaction = await Transaksi.findByPk(id);
+    if (!transaction)
+      return res.status(404).json({ message: "Transaction not found" });
+
+    await transaction.destroy();
+    res.json({ message: "Transaction deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
